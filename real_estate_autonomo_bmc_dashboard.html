@@ -1,0 +1,325 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.root{background:#0d1117;border-radius:12px;padding:16px;color:#e6edf3;font-size:13px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid #21262d}
+.top-title{font-size:15px;font-weight:500}
+.live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3fb950;margin-right:6px}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:500}
+.bg{background:#161b22;border:0.5px solid #21262d;border-radius:8px;padding:10px 12px}
+.sec-title{font-size:10px;color:#7d8590;letter-spacing:.04em;margin-bottom:8px;font-weight:500}
+.green{color:#3fb950}.amber{color:#e3b341}.red{color:#f85149}.blue{color:#58a6ff}.purple{color:#a371f7}.coral{color:#f0997b}
+.nav{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.nav-btn{background:#161b22;border:0.5px solid #21262d;border-radius:6px;color:#7d8590;font-size:11px;padding:5px 12px;cursor:pointer;transition:all .15s}
+.nav-btn.act{background:#1f6feb22;border-color:#1f6feb;color:#58a6ff}
+.panel{display:none}.panel.show{display:block}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.kpi-val{font-size:22px;font-weight:500;line-height:1.1;margin:4px 0}
+.kpi-lbl{font-size:10px;color:#7d8590}
+.kpi-sub{font-size:10px;margin-top:3px}
+.bmc-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto auto;gap:6px;margin-bottom:12px}
+.bmc-block{background:#161b22;border:0.5px solid #30363d;border-radius:8px;padding:8px 10px;cursor:pointer;transition:border-color .15s}
+.bmc-block:hover{border-color:#58a6ff}
+.bmc-block.sel{border-color:#3fb950;background:#0d2818}
+.bmc-hl{font-size:10px;font-weight:500;margin-bottom:4px}
+.bmc-txt{font-size:10px;color:#7d8590;line-height:1.4}
+.bmc-span2{grid-column:span 2}
+.bmc-detail{background:#0d1f2d;border:0.5px solid #1f6feb44;border-radius:8px;padding:12px;margin-bottom:12px;display:none}
+.bmc-detail.show{display:block}
+.comp-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid #21262d}
+.comp-row:last-child{border-bottom:none}
+.comp-name{font-size:11px;width:90px;flex-shrink:0}
+.bar-bg{flex:1;height:6px;background:#21262d;border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.comp-val{font-size:11px;width:52px;text-align:right}
+.map-dot{cursor:pointer}
+.country-label{font-size:9px;fill:#7d8590}
+.tok{font-size:10px;color:#7d8590;padding:4px 0}
+.trend-up::before{content:"↑ "}.trend-dn::before{content:"↓ "}
+</style>
+
+<div class="root">
+  <h2 style="position:absolute;left:-9999px">Dashboard Business Model Canvas — Real Estate Autônomo com IA, projeções 2026-2030</h2>
+
+  <div class="top-bar">
+    <div>
+      <span class="live"></span>
+      <span class="top-title">Real Estate Autônomo · Business Model Canvas + KPIs</span>
+      <span style="font-size:10px;color:#7d8590;margin-left:10px">Projeções 2026–2030 · Brasil & LatAm</span>
+    </div>
+    <div style="display:flex;gap:6px">
+      <span class="badge" style="background:#0d2818;color:#3fb950">IA ativa</span>
+      <button onclick="sendPrompt('Como estruturo o modelo de negócios Real Estate Autônomo com IA para captar investidores?')" style="background:#1f6feb;border:none;color:#e6edf3;font-size:10px;padding:4px 10px;border-radius:6px;cursor:pointer">Pitch para investidores ↗</button>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn act" onclick="showPanel('bmc',this)">Business Model Canvas</button>
+    <button class="nav-btn" onclick="showPanel('kpis',this)">KPIs operacionais</button>
+    <button class="nav-btn" onclick="showPanel('proj',this)">Projeções 2026–2030</button>
+    <button class="nav-btn" onclick="showPanel('latam',this)">LatAm</button>
+    <button class="nav-btn" onclick="showPanel('comp',this)">Competidores</button>
+  </div>
+
+  <!-- PANEL: BMC -->
+  <div class="panel show" id="panel-bmc">
+    <div style="font-size:11px;color:#7d8590;margin-bottom:8px">Clique em qualquer bloco para ver detalhes e métricas do segmento</div>
+    <div class="bmc-grid">
+      <div class="bmc-block" onclick="selectBMC(this,'parceiros')">
+        <div class="bmc-hl blue">Parceiros-chave</div>
+        <div class="bmc-txt">Cartórios · Bancos · PropTechs · Prefeituras · APIs de dados</div>
+      </div>
+      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'atividades')">
+        <div class="bmc-hl green">Atividades-chave</div>
+        <div class="bmc-txt">Análise preditiva · Automação de contratos · Atendimento 24/7 · Scoring de risco · Machine learning contínuo</div>
+      </div>
+      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'proposta')">
+        <div class="bmc-hl" style="color:#e3b341">Proposta de valor</div>
+        <div class="bmc-txt">Transação imobiliária 10x mais rápida, 91% mais segura e 90% mais barata que o modelo tradicional</div>
+      </div>
+      <div class="bmc-block" onclick="selectBMC(this,'relacionamento')">
+        <div class="bmc-hl purple">Relacionamento</div>
+        <div class="bmc-txt">Assistente IA 24/7 · NPS 82 · Contratos automáticos · Follow-up preditivo</div>
+      </div>
+      <div class="bmc-block" onclick="selectBMC(this,'segmentos')">
+        <div class="bmc-hl coral">Segmentos</div>
+        <div class="bmc-txt">Compradores 1ª vez · Investidores · Construtoras · Gestoras de FII</div>
+      </div>
+
+      <div class="bmc-block" onclick="selectBMC(this,'recursos')">
+        <div class="bmc-hl blue">Recursos-chave</div>
+        <div class="bmc-txt">5 Agentes IA · Dados históricos · Estrategista humano · Infraestrutura cloud</div>
+      </div>
+      <div class="bmc-block bmc-span2" style="border:none;background:transparent"></div>
+      <div class="bmc-block" onclick="selectBMC(this,'canais')">
+        <div class="bmc-hl purple">Canais</div>
+        <div class="bmc-txt">App · WhatsApp IA · Portal web · APIs B2B · Parcerias com bancos</div>
+      </div>
+      <div class="bmc-block" style="border:none;background:transparent"></div>
+
+      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'custos')">
+        <div class="bmc-hl red">Estrutura de custos</div>
+        <div class="bmc-txt">Cloud infra · Treinamento de modelos · 1 estrategista humano · Compliance · Integrações API</div>
+      </div>
+      <div class="bmc-block" style="border:none;background:transparent"></div>
+      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'receitas')">
+        <div class="bmc-hl green">Fontes de receita</div>
+        <div class="bmc-txt">Comissão 2-3% · Assinatura premium · Relatórios de mercado · White-label B2B · Dados agregados</div>
+      </div>
+    </div>
+
+    <div class="bmc-detail" id="bmc-detail">
+      <div id="bmc-detail-content"></div>
+    </div>
+
+    <div class="grid4">
+      <div class="bg"><div class="kpi-lbl">Proposta core</div><div class="kpi-val green">18 dias</div><div class="kpi-sub" style="color:#7d8590">vs 120 dias tradicional</div></div>
+      <div class="bg"><div class="kpi-lbl">Custo / transação</div><div class="kpi-val amber">R$380</div><div class="kpi-sub" style="color:#7d8590">vs R$4.200 tradicional</div></div>
+      <div class="bg"><div class="kpi-lbl">Margem operacional</div><div class="kpi-val green">68%</div><div class="kpi-sub green trend-up">+22 pts vs. concorrentes</div></div>
+      <div class="bg"><div class="kpi-lbl">Receita/mês (atual)</div><div class="kpi-val green">R$847k</div><div class="kpi-sub green trend-up">+28% vs. mês anterior</div></div>
+    </div>
+  </div>
+
+  <!-- PANEL: KPIs -->
+  <div class="panel" id="panel-kpis">
+    <div class="grid4">
+      <div class="bg"><div class="kpi-lbl">Clientes atendidos por IA</div><div class="kpi-val green" id="k-cli">3.847</div><div class="kpi-sub green trend-up">acumulado 2025</div></div>
+      <div class="bg"><div class="kpi-lbl">Redução de custos operativos</div><div class="kpi-val green">91%</div><div class="kpi-sub" style="color:#7d8590">vs. corretagem tradicional</div></div>
+      <div class="bg"><div class="kpi-lbl">Velocidade média de fechamento</div><div class="kpi-val amber">18 dias</div><div class="kpi-sub green trend-up">10x mais rápido</div></div>
+      <div class="bg"><div class="kpi-lbl">Nível de confiança (NPS)</div><div class="kpi-val green">82</div><div class="kpi-sub" style="color:#7d8590">Zona excelência ≥70</div></div>
+    </div>
+    <div class="grid3">
+      <div class="bg"><div class="kpi-lbl">Receita comissões (mês)</div><div class="kpi-val green">R$612k</div><div class="kpi-sub green trend-up">72% da receita total</div></div>
+      <div class="bg"><div class="kpi-lbl">Receita serviços premium</div><div class="kpi-val purple">R$235k</div><div class="kpi-sub green trend-up">28% da receita total</div></div>
+      <div class="bg"><div class="kpi-lbl">Precisão de valorização</div><div class="kpi-val blue">96.4%</div><div class="kpi-sub green trend-up">+1.2% esta semana</div></div>
+    </div>
+    <div class="grid2">
+      <div class="bg">
+        <div class="sec-title">DESEMPENHO DOS 5 AGENTES IA</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:140px">Análise de mercado</span><div class="bar-bg"><div class="bar-fill" style="width:97%;background:#3fb950"></div></div><span class="green" style="font-size:10px;width:30px;text-align:right">97%</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:140px">Avaliação preditiva</span><div class="bar-bg"><div class="bar-fill" style="width:96%;background:#58a6ff"></div></div><span class="blue" style="font-size:10px;width:30px;text-align:right">96%</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:140px">Assistente virtual</span><div class="bar-bg"><div class="bar-fill" style="width:91%;background:#a371f7"></div></div><span class="purple" style="font-size:10px;width:30px;text-align:right">91%</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:140px">Detector de oport.</span><div class="bar-bg"><div class="bar-fill" style="width:88%;background:#e3b341"></div></div><span class="amber" style="font-size:10px;width:30px;text-align:right">88%</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:140px">Automação comercial</span><div class="bar-bg"><div class="bar-fill" style="width:79%;background:#f0997b"></div></div><span class="coral" style="font-size:10px;width:30px;text-align:right">79%</span></div>
+        </div>
+      </div>
+      <div class="bg">
+        <div class="sec-title">FONTES DE RECEITA — DISTRIBUIÇÃO</div>
+        <div style="position:relative;height:170px"><canvas id="cRecDist" role="img" aria-label="Donut mostrando distribuição de receita: comissões 72%, premium 28%">Comissões 72%, serviços premium 28%.</canvas></div>
+      </div>
+    </div>
+    <div class="bg" style="margin-bottom:12px">
+      <div class="sec-title">FUNIL DE CONVERSÃO MENSAL</div>
+      <div style="position:relative;height:90px"><canvas id="cFunil" role="img" aria-label="Barras horizontais do funil: leads 1240, qualificados 620, propostas 290, contratos 74">Leads 1240 → Qualificados 620 → Propostas 290 → Contratos 74.</canvas></div>
+    </div>
+  </div>
+
+  <!-- PANEL: PROJEÇÕES -->
+  <div class="panel" id="panel-proj">
+    <div class="sec-title" style="margin-bottom:8px">PROJEÇÕES BRASIL 2026–2030</div>
+    <div class="grid3" style="margin-bottom:12px">
+      <div class="bg"><div class="kpi-lbl">Receita projetada 2030</div><div class="kpi-val green">R$48M</div><div class="kpi-sub green trend-up">CAGR 78%</div></div>
+      <div class="bg"><div class="kpi-lbl">Clientes acumulados 2030</div><div class="kpi-val blue">142k</div><div class="kpi-sub green trend-up">Brasil + LatAm</div></div>
+      <div class="bg"><div class="kpi-lbl">Margem líquida 2030</div><div class="kpi-val green">74%</div><div class="kpi-sub" style="color:#7d8590">modelo escalável</div></div>
+    </div>
+    <div class="bg" style="margin-bottom:10px">
+      <div class="sec-title">RECEITA ANUAL PROJETADA — BRASIL (R$ MILHÕES)</div>
+      <div style="position:relative;height:160px"><canvas id="cProj" role="img" aria-label="Barras de receita projetada: 2026 2.1M, 2027 5.8M, 2028 13.4M, 2029 27M, 2030 48M">Receita cresce de R$2.1M em 2026 a R$48M em 2030.</canvas></div>
+    </div>
+    <div class="bg">
+      <div class="sec-title">CLIENTES ATENDIDOS POR IA — CRESCIMENTO ACUMULADO</div>
+      <div style="position:relative;height:140px"><canvas id="cCli" role="img" aria-label="Linha de clientes acumulados de 4k em 2026 a 142k em 2030">Clientes crescendo de 4k a 142k.</canvas></div>
+    </div>
+  </div>
+
+  <!-- PANEL: LATAM -->
+  <div class="panel" id="panel-latam">
+    <div class="grid3" style="margin-bottom:10px">
+      <div class="bg"><div class="kpi-lbl">Mercado endereçável LatAm</div><div class="kpi-val green">US$2.4T</div><div class="kpi-sub" style="color:#7d8590">valor imobiliário total</div></div>
+      <div class="bg"><div class="kpi-lbl">Transações anuais LatAm</div><div class="kpi-val blue">8.2M</div><div class="kpi-sub" style="color:#7d8590">oportunidades/ano</div></div>
+      <div class="bg"><div class="kpi-lbl">Penetração IA em 2030</div><div class="kpi-val amber">12%</div><div class="kpi-sub green trend-up">vs 0.3% atual</div></div>
+    </div>
+    <div class="grid2">
+      <div class="bg">
+        <div class="sec-title">RECEITA PROJETADA POR PAÍS 2030 (R$ MI)</div>
+        <div style="position:relative;height:200px"><canvas id="cLatam" role="img" aria-label="Barras de receita por país: Brasil 48M, México 32M, Colômbia 18M, Argentina 12M, Peru 9M">Brasil lidera seguido por México, Colômbia, Argentina, Peru.</canvas></div>
+      </div>
+      <div class="bg">
+        <div class="sec-title">MAPA DE EXPANSÃO LATAM</div>
+        <svg viewBox="0 0 260 320" width="100%" style="max-height:210px">
+          <path d="M80 20 L90 18 L106 22 L116 20 L121 28 L131 30 L136 42 L146 45 L151 55 L149 68 L156 72 L159 85 L153 95 L156 108 L149 118 L146 130 L139 140 L129 148 L121 155 L113 165 L106 175 L101 185 L96 178 L89 168 L83 160 L79 148 L73 140 L69 128 L66 115 L61 102 L59 88 L63 75 L66 62 L69 50 L73 38 L76 28 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
+          <path d="M55 90 L68 88 L72 96 L78 98 L80 108 L74 115 L66 115 L61 108 L56 100 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
+          <path d="M58 118 L65 115 L70 120 L68 130 L62 132 L57 125 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
+          <path d="M74 155 L82 150 L88 155 L90 168 L84 178 L78 175 L73 165 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
+          <path d="M96 178 L106 175 L116 182 L120 195 L115 205 L108 210 L100 205 L94 195 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
+          <circle cx="108" cy="120" r="9" fill="#3fb95033" stroke="#3fb950" stroke-width="1.2"/>
+          <circle cx="108" cy="120" r="5" fill="#3fb950"/>
+          <text x="120" y="124" font-size="9" fill="#3fb950" font-weight="500">Brasil</text>
+          <text x="120" y="134" font-size="8" fill="#7d8590">R$48M · 2030</text>
+          <circle cx="65" cy="100" r="7" fill="#58a6ff33" stroke="#58a6ff" stroke-width="1"/>
+          <circle cx="65" cy="100" r="4" fill="#58a6ff"/>
+          <text x="38" y="98" font-size="8" fill="#58a6ff">México</text>
+          <text x="38" y="108" font-size="7" fill="#7d8590">R$32M</text>
+          <circle cx="65" cy="123" r="6" fill="#a371f733" stroke="#a371f7" stroke-width="1"/>
+          <circle cx="65" cy="123" r="3" fill="#a371f7"/>
+          <text x="38" y="121" font-size="8" fill="#a371f7">Colômbia</text>
+          <text x="38" y="131" font-size="7" fill="#7d8590">R$18M</text>
+          <circle cx="80" cy="163" r="6" fill="#e3b34133" stroke="#e3b341" stroke-width="1"/>
+          <circle cx="80" cy="163" r="3" fill="#e3b341"/>
+          <text x="52" y="161" font-size="8" fill="#e3b341">Argentina</text>
+          <text x="52" y="171" font-size="7" fill="#7d8590">R$12M</text>
+          <circle cx="107" cy="190" r="5" fill="#f0997b33" stroke="#f0997b" stroke-width="1"/>
+          <circle cx="107" cy="190" r="2.5" fill="#f0997b"/>
+          <text x="115" y="188" font-size="8" fill="#f0997b">Peru</text>
+          <text x="115" y="198" font-size="7" fill="#7d8590">R$9M</text>
+        </svg>
+      </div>
+    </div>
+    <div class="bg">
+      <div class="sec-title">VELOCIDADE DE FECHAMENTO POR PAÍS (DIAS) — 2026 vs 2030</div>
+      <div style="position:relative;height:110px"><canvas id="cSpeed" role="img" aria-label="Barras agrupadas de velocidade de fechamento por país, melhorando de 2026 a 2030">Velocidade melhora em todos os países entre 2026 e 2030.</canvas></div>
+    </div>
+  </div>
+
+  <!-- PANEL: COMPETIDORES -->
+  <div class="panel" id="panel-comp">
+    <div class="grid4" style="margin-bottom:12px">
+      <div class="bg"><div class="kpi-lbl">Vantagem de velocidade</div><div class="kpi-val green">6.7x</div><div class="kpi-sub" style="color:#7d8590">vs. QuintoAndar</div></div>
+      <div class="bg"><div class="kpi-lbl">Custo por transação</div><div class="kpi-val green">9% do</div><div class="kpi-sub" style="color:#7d8590">custo da Loft</div></div>
+      <div class="bg"><div class="kpi-lbl">Precisão de preço</div><div class="kpi-val green">+57%</div><div class="kpi-sub" style="color:#7d8590">vs. Viva Real</div></div>
+      <div class="bg"><div class="kpi-lbl">NPS líder</div><div class="kpi-val green">82</div><div class="kpi-sub" style="color:#7d8590">vs. 61 do mercado</div></div>
+    </div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div class="bg">
+        <div class="sec-title">TEMPO MÉDIO DE FECHAMENTO (DIAS)</div>
+        <div class="comp-row"><span class="comp-name" style="color:#3fb950;font-weight:500">RE Autônomo</span><div class="bar-bg"><div class="bar-fill" style="width:15%;background:#3fb950"></div></div><span class="green comp-val">18 d</span></div>
+        <div class="comp-row"><span class="comp-name">QuintoAndar</span><div class="bar-bg"><div class="bar-fill" style="width:37%;background:#e3b341"></div></div><span class="amber comp-val">45 d</span></div>
+        <div class="comp-row"><span class="comp-name">Loft</span><div class="bar-bg"><div class="bar-fill" style="width:43%;background:#e3b341"></div></div><span class="amber comp-val">52 d</span></div>
+        <div class="comp-row"><span class="comp-name">Zap Imóveis</span><div class="bar-bg"><div class="bar-fill" style="width:70%;background:#f85149"></div></div><span class="red comp-val">85 d</span></div>
+        <div class="comp-row"><span class="comp-name">Viva Real</span><div class="bar-bg"><div class="bar-fill" style="width:83%;background:#f85149"></div></div><span class="red comp-val">100 d</span></div>
+        <div class="comp-row"><span class="comp-name">Imovelweb</span><div class="bar-bg"><div class="bar-fill" style="width:100%;background:#f85149"></div></div><span class="red comp-val">120 d</span></div>
+      </div>
+      <div class="bg">
+        <div class="sec-title">PRECISÃO DE VALORIZAÇÃO (%)</div>
+        <div class="comp-row"><span class="comp-name" style="color:#3fb950;font-weight:500">RE Autônomo</span><div class="bar-bg"><div class="bar-fill" style="width:96%;background:#3fb950"></div></div><span class="green comp-val">96%</span></div>
+        <div class="comp-row"><span class="comp-name">QuintoAndar</span><div class="bar-bg"><div class="bar-fill" style="width:79%;background:#58a6ff"></div></div><span class="blue comp-val">79%</span></div>
+        <div class="comp-row"><span class="comp-name">Loft</span><div class="bar-bg"><div class="bar-fill" style="width:75%;background:#58a6ff"></div></div><span class="blue comp-val">75%</span></div>
+        <div class="comp-row"><span class="comp-name">Zap Imóveis</span><div class="bar-bg"><div class="bar-fill" style="width:63%;background:#e3b341"></div></div><span class="amber comp-val">63%</span></div>
+        <div class="comp-row"><span class="comp-name">Viva Real</span><div class="bar-bg"><div class="bar-fill" style="width:61%;background:#e3b341"></div></div><span class="amber comp-val">61%</span></div>
+        <div class="comp-row"><span class="comp-name">Imovelweb</span><div class="bar-bg"><div class="bar-fill" style="width:58%;background:#e3b341"></div></div><span class="amber comp-val">58%</span></div>
+      </div>
+    </div>
+    <div class="bg">
+      <div class="sec-title">RADAR COMPETITIVO — PONTUAÇÃO GERAL (0–100)</div>
+      <div style="position:relative;height:190px"><canvas id="cRadar" role="img" aria-label="Gráfico radar comparando RE Autônomo vs concorrentes em 5 dimensões">RE Autônomo supera concorrentes em todas as dimensões.</canvas></div>
+    </div>
+    <div class="bg" style="margin-top:8px">
+      <div class="sec-title">CUSTO OPERACIONAL POR TRANSAÇÃO (R$)</div>
+      <div style="position:relative;height:90px"><canvas id="cCusto" role="img" aria-label="Barras de custo por transação: RE Autônomo 380, QuintoAndar 1800, Loft 4200, Zap 3100, Viva 2800, Imovelweb 2400">RE Autônomo tem custo 10x menor.</canvas></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const bmcData={
+  parceiros:{title:'Parceiros-chave',color:'#58a6ff',items:['Cartórios digitais — integração de escritura eletrônica','Bancos e fintechs — crédito imobiliário automatizado','Prefeituras — acesso a dados urbanísticos oficiais','PropTechs parceiras — enriquecimento de dados','Plataformas de assinatura digital — DocuSign, D4Sign'],kpis:[{l:'Parceiros ativos',v:'34',c:'green'},{l:'APIs integradas',v:'12',c:'blue'},{l:'Redução de burocracia',v:'78%',c:'green'}]},
+  atividades:{title:'Atividades-chave',color:'#3fb950',items:['Análise preditiva de preços com ML contínuo','Automação de contratos inteligentes (smart contracts)','Atendimento e qualificação de leads 24/7 via IA','Scoring de risco financeiro e jurídico do imóvel','Re-treinamento semanal dos modelos com novos dados'],kpis:[{l:'Contratos automáticos/mês',v:'74',c:'green'},{l:'Leads qualificados/dia',v:'42',c:'blue'},{l:'Uptime dos agentes',v:'99.8%',c:'green'}]},
+  proposta:{title:'Proposta de valor',color:'#e3b341',items:['Transação 10x mais rápida que o modelo tradicional','Precificação algorítmica com 96% de precisão','Eliminação do risco de compra por impulso','Transparência total: histórico e projeção do imóvel','Custo 91% menor para o usuário final'],kpis:[{l:'NPS médio',v:'82',c:'green'},{l:'Satisfação pós-compra',v:'94%',c:'green'},{l:'Reclamações/mês',v:'3',c:'amber'}]},
+  relacionamento:{title:'Relacionamento com clientes',color:'#a371f7',items:['Assistente IA disponível 24h via chat, voz e vídeo','Notificações proativas de oportunidades de mercado','Dashboard personalizado por perfil de investidor','Follow-up automático pós-visita e pós-contrato','Comunidade de compradores e investidores'],kpis:[{l:'Tempo médio de resposta',v:'< 2 min',c:'green'},{l:'Retenção de clientes',v:'81%',c:'green'},{l:'Indicações orgânicas',v:'38%',c:'blue'}]},
+  segmentos:{title:'Segmentos de clientes',color:'#f0997b',items:['Compradores de primeiro imóvel (25–38 anos)','Investidores pessoa física (FII, aluguel, revenda)','Construtoras buscando automação de vendas','Gestoras de fundos imobiliários (FII)','Expatriados e compradores internacionais'],kpis:[{l:'Ticket médio',v:'R$480k',c:'amber'},{l:'% clientes premium',v:'28%',c:'purple'},{l:'Segmento top',v:'Investidor PF',c:'blue'}]},
+  recursos:{title:'Recursos-chave',color:'#58a6ff',items:['5 agentes IA especializados (análise, avaliação, assistente, oportunidades, automação)','Base de dados de +2M imóveis históricos','Infraestrutura cloud escalável (AWS + GCP)','1 estrategista humano de alto nível','Modelos de ML proprietários treinados no mercado BR'],kpis:[{l:'Dados processados/dia',v:'1.247 imóv.',c:'green'},{l:'Custo infra/mês',v:'R$18k',c:'amber'},{l:'Uptime SLA',v:'99.9%',c:'green'}]},
+  canais:{title:'Canais de distribuição',color:'#a371f7',items:['App mobile iOS + Android com busca IA embutida','WhatsApp Business com agente conversacional','Portal web com tour virtual 3D','API B2B para construtoras e incorporadoras','Parcerias com bancos para oferta no momento do crédito'],kpis:[{l:'Leads via app',v:'54%',c:'green'},{l:'Leads via WhatsApp',v:'31%',c:'blue'},{l:'Leads via B2B',v:'15%',c:'amber'}]},
+  custos:{title:'Estrutura de custos',color:'#f85149',items:['Cloud infra AWS/GCP — R$18k/mês','Treinamento e fine-tuning dos modelos — R$8k/mês','1 estrategista humano — R$25k/mês','Compliance e jurídico — R$12k/mês','Marketing e aquisição — R$35k/mês'],kpis:[{l:'Custo fixo/mês',v:'R$98k',c:'amber'},{l:'Custo variável/transação',v:'R$380',c:'green'},{l:'Break-even mensal',v:'204 transações',c:'blue'}]},
+  receitas:{title:'Fontes de receita',color:'#3fb950',items:['Comissão de 2–3% sobre valor da transação','Assinatura premium para investidores (R$299/mês)','Relatórios de mercado exclusivos (R$499/un.)','White-label B2B para incorporadoras (SaaS)','Monetização de dados agregados (anonimizados)'],kpis:[{l:'Comissões (mês)',v:'R$612k',c:'green'},{l:'Premium (mês)',v:'R$235k',c:'purple'},{l:'ARPU',v:'R$220',c:'amber'}]},
+};
+
+function selectBMC(el,key){
+  document.querySelectorAll('.bmc-block').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  const d=bmcData[key];const det=document.getElementById('bmc-detail');const cont=document.getElementById('bmc-detail-content');
+  cont.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="width:10px;height:10px;border-radius:50%;background:${d.color}"></div><span style="font-size:13px;font-weight:500;color:${d.color}">${d.title}</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div style="font-size:10px;color:#7d8590;margin-bottom:6px;letter-spacing:.04em">ELEMENTOS PRINCIPAIS</div>${d.items.map(i=>`<div style="font-size:11px;color:#c9d1d9;padding:3px 0;border-bottom:0.5px solid #21262d">◦ ${i}</div>`).join('')}</div><div><div style="font-size:10px;color:#7d8590;margin-bottom:6px;letter-spacing:.04em">MÉTRICAS DO BLOCO</div>${d.kpis.map(k=>`<div style="background:#0d1117;border-radius:6px;padding:6px 10px;margin-bottom:6px"><div style="font-size:10px;color:#7d8590">${k.l}</div><div style="font-size:18px;font-weight:500;color:${k.c==='green'?'#3fb950':k.c==='blue'?'#58a6ff':k.c==='purple'?'#a371f7':'#e3b341'}">${k.v}</div></div>`).join('')}</div></div>`;
+  det.classList.add('show');
+}
+
+function showPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('act'));
+  document.getElementById('panel-'+id).classList.add('show');
+  btn.classList.add('act');
+  if(id==='kpis')initKpiCharts();
+  if(id==='proj')initProjCharts();
+  if(id==='latam')initLatamCharts();
+  if(id==='comp')initCompCharts();
+}
+
+let chartsInit={};
+function initKpiCharts(){
+  if(chartsInit.kpi)return;chartsInit.kpi=true;
+  new Chart(document.getElementById('cRecDist'),{type:'doughnut',data:{labels:['Comissões','Premium/SaaS'],datasets:[{data:[72,28],backgroundColor:['#3fb950','#a371f7'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}});
+  new Chart(document.getElementById('cFunil'),{type:'bar',data:{labels:['Leads','Qualificados','Propostas','Contratos'],datasets:[{data:[1240,620,290,74],backgroundColor:['#58a6ff55','#a371f755','#e3b34155','#3fb95088'],borderColor:['#58a6ff','#a371f7','#e3b341','#3fb950'],borderWidth:1,borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:9}},grid:{color:'#21262d'},border:{display:false}},y:{ticks:{color:'#c9d1d9',font:{size:10}},grid:{display:false},border:{display:false}}}}});
+}
+function initProjCharts(){
+  if(chartsInit.proj)return;chartsInit.proj=true;
+  const yrs=['2026','2027','2028','2029','2030'];
+  new Chart(document.getElementById('cProj'),{type:'bar',data:{labels:yrs,datasets:[{label:'Receita (R$M)',data:[2.1,5.8,13.4,27,48],backgroundColor:yrs.map((_,i)=>i===4?'#3fb950':'#3fb95055'),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:10}},grid:{color:'#21262d'},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>'R$'+v+'M'},grid:{color:'#21262d'},border:{display:false}}}}});
+  new Chart(document.getElementById('cCli'),{type:'line',data:{labels:yrs,datasets:[{label:'Clientes',data:[4200,12800,34000,76000,142000],borderColor:'#58a6ff',backgroundColor:'#58a6ff18',borderWidth:1.5,fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#58a6ff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:10}},grid:{color:'#21262d'},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>v>=1000?Math.round(v/1000)+'k':v},grid:{color:'#21262d'},border:{display:false}}}}});
+}
+function initLatamCharts(){
+  if(chartsInit.latam)return;chartsInit.latam=true;
+  new Chart(document.getElementById('cLatam'),{type:'bar',data:{labels:['Brasil','México','Colômbia','Argentina','Peru'],datasets:[{data:[48,32,18,12,9],backgroundColor:['#3fb950','#58a6ff','#a371f7','#e3b341','#f0997b'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>'R$'+v+'M'},grid:{color:'#21262d'},border:{display:false}}}}});
+  new Chart(document.getElementById('cSpeed'),{type:'bar',data:{labels:['Brasil','México','Colômbia','Argentina','Peru'],datasets:[{label:'2026',data:[24,35,42,55,48],backgroundColor:'#21262d',borderColor:'#7d8590',borderWidth:1,borderRadius:3},{label:'2030',data:[8,14,18,22,20],backgroundColor:['#3fb950','#58a6ff','#a371f7','#e3b341','#f0997b'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{color:'#7d8590',font:{size:9},boxWidth:10}}},scales:{x:{ticks:{color:'#7d8590',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>v+'d'},grid:{color:'#21262d'},border:{display:false}}}}});
+}
+function initCompCharts(){
+  if(chartsInit.comp)return;chartsInit.comp=true;
+  new Chart(document.getElementById('cRadar'),{type:'radar',data:{labels:['Velocidade','Precisão IA','Custo','NPS','Automação'],datasets:[{label:'RE Autônomo',data:[98,96,95,82,94],borderColor:'#3fb950',backgroundColor:'#3fb95022',pointBackgroundColor:'#3fb950',borderWidth:1.5},{label:'QuintoAndar',data:[65,79,55,72,60],borderColor:'#58a6ff',backgroundColor:'#58a6ff11',pointBackgroundColor:'#58a6ff',borderWidth:1},{label:'Loft',data:[58,75,40,68,52],borderColor:'#e3b341',backgroundColor:'#e3b34111',pointBackgroundColor:'#e3b341',borderWidth:1},{label:'Zap / Viva',data:[35,63,50,55,30],borderColor:'#f8514966',backgroundColor:'transparent',pointBackgroundColor:'#f85149',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#7d8590',font:{size:9},boxWidth:10}}},scales:{r:{ticks:{display:false},grid:{color:'#21262d'},pointLabels:{color:'#c9d1d9',font:{size:9}},angleLines:{color:'#21262d'}}}}});
+  new Chart(document.getElementById('cCusto'),{type:'bar',data:{labels:['RE Autônomo','QuintoAndar','Loft','Zap','Viva Real','Imovelweb'],datasets:[{data:[380,1800,4200,3100,2800,2400],backgroundColor:['#3fb950','#e3b34155','#f8514955','#f8514944','#f8514933','#f8514922'],borderColor:['#3fb950','#e3b341','#f85149','#f85149','#f85149','#f85149'],borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#c9d1d9',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>'R$'+v.toLocaleString()},grid:{color:'#21262d'},border:{display:false}}}}});
+}
+
+let ticker=0;
+setInterval(()=>{const el=document.getElementById('k-cli');if(el){ticker++;el.textContent=(3847+ticker*2).toLocaleString('pt-BR');}},3000);
+</script>
