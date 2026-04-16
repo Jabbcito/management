@@ -1,295 +1,504 @@
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;500;600;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans)}
-.root{background:#0d1117;border-radius:12px;padding:16px;color:#e6edf3;font-size:13px}
-.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid #21262d}
-.top-title{font-size:15px;font-weight:500}
-.live{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3fb950;margin-right:6px}
-.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:500}
-.bg{background:#161b22;border:0.5px solid #21262d;border-radius:8px;padding:10px 12px}
-.sec-title{font-size:10px;color:#7d8590;letter-spacing:.04em;margin-bottom:8px;font-weight:500}
-.green{color:#3fb950}.amber{color:#e3b341}.red{color:#f85149}.blue{color:#58a6ff}.purple{color:#a371f7}.coral{color:#f0997b}
-.nav{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.nav-btn{background:#161b22;border:0.5px solid #21262d;border-radius:6px;color:#7d8590;font-size:11px;padding:5px 12px;cursor:pointer;transition:all .15s}
-.nav-btn.act{background:#1f6feb22;border-color:#1f6feb;color:#58a6ff}
+:root{
+  --bg:#08090d;--surface:#0f1117;--border:#1e2330;--border2:#252b3b;
+  --text:#e8ecf4;--muted:#5a6480;--green:#00c875;--amber:#f5a623;
+  --red:#f04f55;--blue:#4d9de0;--purple:#9b72f7;--coral:#f0836a;
+  --green-dim:#00c87520;--blue-dim:#4d9de020;--amber-dim:#f5a62320;
+  --red-dim:#f04f5520;--purple-dim:#9b72f720;
+}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);font-size:13px}
+.root{padding:20px;max-width:1200px;margin:0 auto}
+
+/* TOP BAR */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.brand-name{font-size:14px;font-weight:600;letter-spacing:-.01em}
+.brand-sub{font-size:10px;color:var(--muted);margin-top:1px;font-family:'DM Mono',monospace}
+.top-actions{display:flex;gap:8px;align-items:center}
+.badge-live{background:var(--green-dim);color:var(--green);border:1px solid #00c87540;border-radius:20px;padding:3px 10px;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.04em}
+.pitch-btn{background:var(--blue);border:none;color:#fff;font-size:10px;padding:6px 14px;border-radius:6px;cursor:pointer;font-family:'Sora',sans-serif;font-weight:500;transition:opacity .15s}
+.pitch-btn:hover{opacity:.85}
+
+/* NAV */
+.nav{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap;background:var(--surface);padding:4px;border-radius:10px;border:1px solid var(--border)}
+.nav-btn{background:transparent;border:none;border-radius:7px;color:var(--muted);font-size:11px;padding:6px 14px;cursor:pointer;transition:all .15s;font-family:'Sora',sans-serif;font-weight:500}
+.nav-btn.act{background:var(--border2);color:var(--text)}
 .panel{display:none}.panel.show{display:block}
+
+/* CARDS / BLOCKS */
+.bg{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.sec-title{font-size:9px;color:var(--muted);letter-spacing:.08em;margin-bottom:10px;font-family:'DM Mono',monospace;text-transform:uppercase}
 .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
-.kpi-val{font-size:22px;font-weight:500;line-height:1.1;margin:4px 0}
-.kpi-lbl{font-size:10px;color:#7d8590}
-.kpi-sub{font-size:10px;margin-top:3px}
-.bmc-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto auto;gap:6px;margin-bottom:12px}
-.bmc-block{background:#161b22;border:0.5px solid #30363d;border-radius:8px;padding:8px 10px;cursor:pointer;transition:border-color .15s}
-.bmc-block:hover{border-color:#58a6ff}
-.bmc-block.sel{border-color:#3fb950;background:#0d2818}
-.bmc-hl{font-size:10px;font-weight:500;margin-bottom:4px}
-.bmc-txt{font-size:10px;color:#7d8590;line-height:1.4}
-.bmc-span2{grid-column:span 2}
-.bmc-detail{background:#0d1f2d;border:0.5px solid #1f6feb44;border-radius:8px;padding:12px;margin-bottom:12px;display:none}
-.bmc-detail.show{display:block}
-.comp-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid #21262d}
+.kpi-val{font-size:24px;font-weight:600;line-height:1;margin:4px 0 2px;letter-spacing:-.02em}
+.kpi-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.04em;text-transform:uppercase}
+.kpi-sub{font-size:10px;margin-top:4px}
+.green{color:var(--green)}.amber{color:var(--amber)}.red{color:var(--red)}.blue{color:var(--blue)}.purple{color:var(--purple)}.coral{color:var(--coral)}
+
+/* LEAN CANVAS */
+.lc-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr 1fr 1fr;grid-template-rows:auto auto;gap:6px;margin-bottom:12px}
+.lc-block{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.lc-block::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity .2s}
+.lc-block:hover::before,.lc-block.sel::before{opacity:1}
+.lc-block:hover{border-color:var(--blue);transform:translateY(-1px)}
+.lc-block.sel{border-color:var(--green);background:#00c87508}
+.lc-hl{font-size:9px;font-weight:600;margin-bottom:6px;font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+.lc-txt{font-size:10px;color:var(--muted);line-height:1.5}
+.lc-span2{grid-column:span 2}
+.lc-detail{background:#0a1220;border:1px solid #1f3050;border-radius:10px;padding:14px;margin-bottom:12px;display:none}
+.lc-detail.show{display:block}
+
+/* COMPETITOR */
+.comp-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
 .comp-row:last-child{border-bottom:none}
-.comp-name{font-size:11px;width:90px;flex-shrink:0}
-.bar-bg{flex:1;height:6px;background:#21262d;border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;border-radius:3px}
-.comp-val{font-size:11px;width:52px;text-align:right}
-.map-dot{cursor:pointer}
-.country-label{font-size:9px;fill:#7d8590}
-.tok{font-size:10px;color:#7d8590;padding:4px 0}
-.trend-up::before{content:"↑ "}.trend-dn::before{content:"↓ "}
+.comp-name{font-size:11px;width:110px;flex-shrink:0;font-weight:500}
+.bar-bg{flex:1;height:5px;background:var(--border2);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.comp-val{font-size:11px;width:38px;text-align:right;font-family:'DM Mono',monospace;font-weight:500}
+.comp-tag{font-size:9px;padding:2px 6px;border-radius:4px;flex-shrink:0;font-family:'DM Mono',monospace}
+
+/* RISK / CHANCE BARS */
+.prob-block{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.prob-label{font-size:10px;width:130px;flex-shrink:0}
+.prob-track{flex:1;height:8px;background:var(--border2);border-radius:4px;overflow:hidden;display:flex}
+.prob-success{background:var(--green);height:100%;border-radius:4px 0 0 4px;transition:width 1s}
+.prob-fail{background:var(--red);height:100%;border-radius:0 4px 4px 0;transition:width 1s}
+.prob-nums{font-size:9px;font-family:'DM Mono',monospace;display:flex;gap:4px}
+
+/* SCORE RING */
+.score-ring{width:64px;height:64px;flex-shrink:0}
+
+/* INSIGHT PILL */
+.insight{background:var(--border);border-radius:6px;padding:6px 10px;font-size:10px;color:var(--muted);margin-bottom:6px;line-height:1.5;border-left:2px solid var(--blue)}
+.insight b{color:var(--text)}
+
+.tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-family:'DM Mono',monospace;margin-right:4px;margin-bottom:2px}
+.tag-green{background:var(--green-dim);color:var(--green)}
+.tag-red{background:var(--red-dim);color:var(--red)}
+.tag-blue{background:var(--blue-dim);color:var(--blue)}
+.tag-amber{background:var(--amber-dim);color:var(--amber)}
+.tag-purple{background:var(--purple-dim);color:var(--purple)}
+
+.divider{height:1px;background:var(--border);margin:10px 0}
+.chart-wrap{position:relative;height:180px}
+.chart-wrap-sm{position:relative;height:140px}
+
+/* STRENGTHS/WEAKNESSES TABLE */
+.sw-table{width:100%;border-collapse:collapse}
+.sw-table td{padding:6px 10px;font-size:10px;border-bottom:1px solid var(--border);vertical-align:top}
+.sw-table thead td{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border2)}
 </style>
 
 <div class="root">
-  <h2 style="position:absolute;left:-9999px">Dashboard Business Model Canvas - Imobiliário Autônomo com IA para o Peru, projeções 2026-2030</h2>
+  <h2 style="position:absolute;left:-9999px">Dashboard PropTech Peru – Modelo de Negócio e Análise Competitiva 2026</h2>
 
   <div class="top-bar">
-    <div>
-      <span class="live"></span>
-      <span class="top-title">Imobiliário Autônomo · Business Model Canvas + KPIs</span>
-      <span style="font-size:10px;color:#7d8590;margin-left:10px">Peru 2026-2030 · Lima, Arequipa, Trujillo e expansão LatAm</span>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <div>
+        <div class="brand-name">PropTech IA · Peru &amp; Latam</div>
+        <div class="brand-sub">Lean Canvas + Análise Competitiva · 2026</div>
+      </div>
     </div>
-    <div style="display:flex;gap:6px">
-      <span class="badge" style="background:#0d2818;color:#3fb950">IA ativa</span>
-      <button onclick="sendPrompt('Como estruturo o modelo de negócio imobiliário autônomo com IA para o Peru para captar investidores?')" style="background:#1f6feb;border:none;color:#e6edf3;font-size:10px;padding:4px 10px;border-radius:6px;cursor:pointer">Pitch para investidores ↗</button>
+    <div class="top-actions">
+      <span class="badge-live">IA ATIVA</span>
+      <button class="pitch-btn" onclick="sendPrompt('Como estruturo o pitch para investidores desta plataforma PropTech com IA no Peru?')">Pitch para investidores ↗</button>
     </div>
   </div>
 
   <div class="nav">
-    <button class="nav-btn act" onclick="showPanel('bmc',this)">Business Model Canvas</button>
-    <button class="nav-btn" onclick="showPanel('kpis',this)">KPIs operacionais</button>
-    <button class="nav-btn" onclick="showPanel('proj',this)">Projeções 2026-2030</button>
-    <button class="nav-btn" onclick="showPanel('latam',this)">LatAm</button>
-    <button class="nav-btn" onclick="showPanel('comp',this)">Concorrência</button>
+    <button class="nav-btn act" onclick="showPanel('canvas',this)">Lean Canvas</button>
+    <button class="nav-btn" onclick="showPanel('modelo',this)">Modelo de Negócio</button>
+    <button class="nav-btn" onclick="showPanel('comp',this)">Concorrentes</button>
+    <button class="nav-btn" onclick="showPanel('prob',this)">Probabilidades</button>
+    <button class="nav-btn" onclick="showPanel('latam',this)">Latam</button>
   </div>
 
-  <!-- PANEL: BMC -->
-  <div class="panel show" id="panel-bmc">
-    <div style="font-size:11px;color:#7d8590;margin-bottom:8px">Clique em qualquer bloco para ver detalhes e métricas do modelo para o Peru</div>
-    <div class="bmc-grid">
-      <div class="bmc-block" onclick="selectBMC(this,'parceiros')">
-        <div class="bmc-hl blue">Parceiros-chave</div>
-        <div class="bmc-txt">SUNARP · bancos hipotecários · proptechs locais · cartórios digitais · dados urbanos</div>
-      </div>
-      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'atividades')">
-        <div class="bmc-hl green">Atividades-chave</div>
-        <div class="bmc-txt">Scoring de risco · avaliação assistida por IA · automação documental · atendimento 24/7 · correspondência de demanda</div>
-      </div>
-      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'proposta')">
-        <div class="bmc-hl" style="color:#e3b341">Proposta de valor</div>
-        <div class="bmc-txt">Operação imobiliária mais rápida, mais transparente e mais eficiente para o mercado peruano, com foco em fechamento e confiança</div>
-      </div>
-      <div class="bmc-block" onclick="selectBMC(this,'relacionamento')">
-        <div class="bmc-hl purple">Relacionamento</div>
-        <div class="bmc-txt">Assistente IA 24/7 · alertas personalizados · acompanhamento automático · NPS elevado</div>
-      </div>
-      <div class="bmc-block" onclick="selectBMC(this,'segmentos')">
-        <div class="bmc-hl coral">Segmentos</div>
-        <div class="bmc-txt">Compradores de primeiro imóvel · investidores · construtoras médias · corretores independentes</div>
-      </div>
-
-      <div class="bmc-block" onclick="selectBMC(this,'recursos')">
-        <div class="bmc-hl blue">Recursos-chave</div>
-        <div class="bmc-txt">5 agentes IA · dados históricos urbanos · motor de pricing · integrações financeiras · estrategista humano</div>
-      </div>
-      <div class="bmc-block bmc-span2" style="border:none;background:transparent"></div>
-      <div class="bmc-block" onclick="selectBMC(this,'canais')">
-        <div class="bmc-hl purple">Canais</div>
-        <div class="bmc-txt">Web · WhatsApp · assessoria remota · API B2B · parcerias com bancos e construtoras</div>
-      </div>
-      <div class="bmc-block" style="border:none;background:transparent"></div>
-
-      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'custos')">
-        <div class="bmc-hl red">Estrutura de custos</div>
-        <div class="bmc-txt">Infraestrutura cloud · treinamento de modelos · compliance · aquisição digital · suporte comercial</div>
-      </div>
-      <div class="bmc-block" style="border:none;background:transparent"></div>
-      <div class="bmc-block bmc-span2" onclick="selectBMC(this,'receitas')">
-        <div class="bmc-hl green">Fontes de receita</div>
-        <div class="bmc-txt">Comissão 1,8%-2,5% · assinatura premium · relatórios · licenciamento B2B · análise de mercado</div>
-      </div>
-    </div>
-
-    <div class="bmc-detail" id="bmc-detail">
-      <div id="bmc-detail-content"></div>
-    </div>
-
-    <div class="grid4">
-      <div class="bg"><div class="kpi-lbl">Proposta central</div><div class="kpi-val green">21 dias</div><div class="kpi-sub" style="color:#7d8590">vs 95 dias no modelo tradicional</div></div>
-      <div class="bg"><div class="kpi-lbl">Custo / transação</div><div class="kpi-val amber">S/ 520</div><div class="kpi-sub" style="color:#7d8590">vs S/ 4.100 no modelo tradicional</div></div>
-      <div class="bg"><div class="kpi-lbl">Margem operacional</div><div class="kpi-val green">64%</div><div class="kpi-sub green trend-up">+19 pts vs modelo clássico</div></div>
-      <div class="bg"><div class="kpi-lbl">Receita mensal atual</div><div class="kpi-val green">S/ 910k</div><div class="kpi-sub green trend-up">+24% vs mês anterior</div></div>
-    </div>
-  </div>
-
-  <!-- PANEL: KPIs -->
-  <div class="panel" id="panel-kpis">
-    <div class="grid4">
-      <div class="bg"><div class="kpi-lbl">Clientes atendidos pela IA</div><div class="kpi-val green" id="k-cli">4.126</div><div class="kpi-sub green trend-up">acumulado 2025</div></div>
-      <div class="bg"><div class="kpi-lbl">Redução de custos operacionais</div><div class="kpi-val green">87%</div><div class="kpi-sub" style="color:#7d8590">vs corretagem tradicional</div></div>
-      <div class="bg"><div class="kpi-lbl">Velocidade média de fechamento</div><div class="kpi-val amber">21 dias</div><div class="kpi-sub green trend-up">4,5x mais rápido</div></div>
-      <div class="bg"><div class="kpi-lbl">Nível de confiança (NPS)</div><div class="kpi-val green">79</div><div class="kpi-sub" style="color:#7d8590">zona de excelência</div></div>
-    </div>
-    <div class="grid3">
-      <div class="bg"><div class="kpi-lbl">Receita por comissões</div><div class="kpi-val green">S/ 655k</div><div class="kpi-sub green trend-up">72% da receita total</div></div>
-      <div class="bg"><div class="kpi-lbl">Receita por serviços premium</div><div class="kpi-val purple">S/ 255k</div><div class="kpi-sub green trend-up">28% da receita total</div></div>
-      <div class="bg"><div class="kpi-lbl">Precisão de avaliação</div><div class="kpi-val blue">94,8%</div><div class="kpi-sub green trend-up">+1,1% esta semana</div></div>
-    </div>
-    <div class="grid2">
-      <div class="bg">
-        <div class="sec-title">DESEMPENHO DOS 5 AGENTES IA</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:150px">Análise de mercado</span><div class="bar-bg"><div class="bar-fill" style="width:96%;background:#3fb950"></div></div><span class="green" style="font-size:10px;width:30px;text-align:right">96%</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:150px">Avaliação preditiva</span><div class="bar-bg"><div class="bar-fill" style="width:95%;background:#58a6ff"></div></div><span class="blue" style="font-size:10px;width:30px;text-align:right">95%</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:150px">Assistente comercial</span><div class="bar-bg"><div class="bar-fill" style="width:90%;background:#a371f7"></div></div><span class="purple" style="font-size:10px;width:30px;text-align:right">90%</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:150px">Detector de demanda</span><div class="bar-bg"><div class="bar-fill" style="width:86%;background:#e3b341"></div></div><span class="amber" style="font-size:10px;width:30px;text-align:right">86%</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#c9d1d9;width:150px">Automação jurídica</span><div class="bar-bg"><div class="bar-fill" style="width:82%;background:#f0997b"></div></div><span class="coral" style="font-size:10px;width:30px;text-align:right">82%</span></div>
+  <div class="panel show" id="panel-canvas">
+    <div class="bg" style="margin-bottom:10px">
+      <div class="sec-title">Resumo executivo</div>
+      <div class="grid3">
+        <div class="bg" style="border-color:var(--green)">
+          <div class="kpi-lbl">Probabilidade de sucesso · Peru</div>
+          <div class="kpi-val green">70–80%</div>
+          <div class="kpi-sub" style="color:var(--muted)">Maior lacuna em AVM e automação</div>
+        </div>
+        <div class="bg" style="border-color:var(--blue)">
+          <div class="kpi-lbl">Probabilidade de sucesso · Latam</div>
+          <div class="kpi-val blue">60–70%</div>
+          <div class="kpi-sub" style="color:var(--muted)">Mex, Col, Chile demandam transparência</div>
+        </div>
+        <div class="bg" style="border-color:var(--amber)">
+          <div class="kpi-lbl">Risco principal</div>
+          <div class="kpi-val amber">30%</div>
+          <div class="kpi-sub" style="color:var(--muted)">Dependência de dados oficiais + resistência de corretores</div>
         </div>
       </div>
-      <div class="bg">
-        <div class="sec-title">FONTES DE RECEITA - DISTRIBUIÇÃO</div>
-        <div style="position:relative;height:170px"><canvas id="cRecDist" role="img" aria-label="Distribuição de receitas: comissões 72%, premium 28%"></canvas></div>
+    </div>
+
+    <div style="font-size:10px;color:var(--muted);margin-bottom:8px">Clique em qualquer bloco para ver o detalhe do Lean Canvas</div>
+    <div class="lc-grid">
+      <div class="lc-block" onclick="selectLC(this,'problema')" style="--accent:var(--red)">
+        <div class="lc-hl" style="color:var(--red)">Problema</div>
+        <div class="lc-txt">Informação assimétrica na avaliação · Processos fragmentados · Fraude em canais informais</div>
+      </div>
+      <div class="lc-block lc-span2" onclick="selectLC(this,'solucion')" style="--accent:var(--blue)">
+        <div class="lc-hl" style="color:var(--blue)">Solução</div>
+        <div class="lc-txt">AVM hiperlocal com dados cadastrais · Detector de oportunidades de valorização · CRM preditivo com IA conversacional avançada</div>
+      </div>
+      <div class="lc-block lc-span2" onclick="selectLC(this,'propuesta')" style="--accent:var(--green)">
+        <div class="lc-hl" style="color:var(--green)">Proposta de Valor Única</div>
+        <div class="lc-txt">Plataforma que <b>audita, alerta e fecha</b> com precisão · Transparência na avaliação + eficiência no fechamento comercial</div>
+      </div>
+      <div class="lc-block" onclick="selectLC(this,'ventaja')" style="--accent:var(--purple)">
+        <div class="lc-hl" style="color:var(--purple)">Vantagem Competitiva</div>
+        <div class="lc-txt">Orquestração integrada de 5 agentes · Avaliação + detecção de alpha + fechamento sem fricção</div>
+      </div>
+      <div class="lc-block" onclick="selectLC(this,'canales')" style="--accent:var(--amber)">
+        <div class="lc-hl" style="color:var(--amber)">Canais</div>
+        <div class="lc-txt">Portal web + app móvel · WhatsApp + CRM · Parcerias com bancos e cartórios</div>
+      </div>
+      <div class="lc-block" onclick="selectLC(this,'segmentos')" style="--accent:var(--coral)">
+        <div class="lc-hl" style="color:var(--coral)">Segmentos</div>
+        <div class="lc-txt">Famílias Lima Moderna e Top · Investidores multi-proprietários · Trujillo, Piura, Arequipa</div>
+      </div>
+      <div class="lc-block" onclick="selectLC(this,'metricas')" style="--accent:var(--blue)">
+        <div class="lc-hl" style="color:var(--blue)">Métricas-Chave</div>
+        <div class="lc-txt">Propriedades auditadas · Leads qualificados gerados · Taxa de fechamento automatizado</div>
+      </div>
+      <div class="lc-block" onclick="selectLC(this,'costos')" style="--accent:var(--red)">
+        <div class="lc-hl" style="color:var(--red)">Custos</div>
+        <div class="lc-txt">Desenvolvimento IA / Big Data · Marketing · Integração com registros públicos</div>
       </div>
     </div>
-    <div class="bg" style="margin-bottom:12px">
-      <div class="sec-title">FUNIL DE CONVERSÃO MENSAL</div>
-      <div style="position:relative;height:90px"><canvas id="cFunil" role="img" aria-label="Funil mensal: leads, qualificados, propostas e contratos"></canvas></div>
+
+    <div class="lc-detail" id="lc-detail">
+      <div id="lc-detail-content"></div>
+    </div>
+
+    <div class="bg" style="border-color:var(--green)30">
+      <div class="sec-title">💰 Fontes de receita</div>
+      <div class="grid3">
+        <div>
+          <span class="tag tag-green">ASSINATURA</span>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5">Premium para investidores ativos</div>
+        </div>
+        <div>
+          <span class="tag tag-blue">TAXA POR FECHAMENTO</span>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5">Comissão por transação concluída</div>
+        </div>
+        <div>
+          <span class="tag tag-purple">DADOS B2B</span>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5">Analytics para corretores e bancos</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- PANEL: PROJEÇÕES -->
-  <div class="panel" id="panel-proj">
-    <div class="sec-title" style="margin-bottom:8px">PROJEÇÕES PERU 2026-2030</div>
-    <div class="grid3" style="margin-bottom:12px">
-      <div class="bg"><div class="kpi-lbl">Receita projetada 2030</div><div class="kpi-val green">S/ 56M</div><div class="kpi-sub green trend-up">CAGR 73%</div></div>
-      <div class="bg"><div class="kpi-lbl">Clientes acumulados 2030</div><div class="kpi-val blue">118k</div><div class="kpi-sub green trend-up">Peru + expansão seletiva</div></div>
-      <div class="bg"><div class="kpi-lbl">Margem líquida 2030</div><div class="kpi-val green">71%</div><div class="kpi-sub" style="color:#7d8590">modelo escalável</div></div>
+  <!-- ====== PANEL: MODELO DE NEGOCIO ====== -->
+  <div class="panel" id="panel-modelo">
+    <div class="insight"><b>Proposta:</b> Plataforma PropTech integral com IA avançada — AVM robusto com dados oficiais + detecção de oportunidades de valorização + automação comercial end-to-end.</div>
+
+    <div class="grid2" style="margin-bottom:12px">
+      <div class="bg">
+        <div class="sec-title">Componentes-chave do modelo</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+            <div style="width:28px;height:28px;border-radius:8px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">📊</div>
+            <div>
+              <div style="font-size:11px;font-weight:600;margin-bottom:2px">AVM Robusto</div>
+              <div style="font-size:10px;color:var(--muted)">Dados cadastrais + registros públicos + análise hiperlocal por distrito</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding-bottom:8px;border-bottom:1px solid var(--border)">
+            <div style="width:28px;height:28px;border-radius:8px;background:var(--green-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">🔍</div>
+            <div>
+              <div style="font-size:11px;font-weight:600;margin-bottom:2px">Detector de Oportunidades</div>
+              <div style="font-size:10px;color:var(--muted)">Alertas de valorização + análise preditiva de alpha por zona</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="width:28px;height:28px;border-radius:8px;background:var(--purple-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px">🤖</div>
+            <div>
+              <div style="font-size:11px;font-weight:600;margin-bottom:2px">Automação End-to-End</div>
+              <div style="font-size:10px;color:var(--muted)">CRM preditivo + IA conversacional + scoring jurídico/financeiro</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg">
+        <div class="sec-title">Fontes de receita</div>
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px">Assinatura premium</span><span class="green" style="font-size:11px;font-family:'DM Mono',monospace">Recorrente</span></div>
+          <div class="bar-bg" style="height:7px"><div class="bar-fill" style="width:40%;background:var(--green)"></div></div>
+        </div>
+        <div style="margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px">Comissão por fechamento</span><span class="amber" style="font-size:11px;font-family:'DM Mono',monospace">Transacional</span></div>
+          <div class="bar-bg" style="height:7px"><div class="bar-fill" style="width:35%;background:var(--amber)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px">Serviços B2B / Dados</span><span class="blue" style="font-size:11px;font-family:'DM Mono',monospace">Escalável</span></div>
+          <div class="bar-bg" style="height:7px"><div class="bar-fill" style="width:25%;background:var(--blue)"></div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="insight" style="margin-bottom:0"><b>Resultado:</b> A proposta tem a melhor projeção de sucesso no Peru e Latam se conseguir alianças estratégicas com bancos, construtoras e registros públicos.</div>
+      </div>
     </div>
-    <div class="bg" style="margin-bottom:10px">
-      <div class="sec-title">RECEITA ANUAL PROJETADA - PERU (S/ MILHÕES)</div>
-      <div style="position:relative;height:160px"><canvas id="cProj" role="img" aria-label="Receita anual projetada no Peru"></canvas></div>
-    </div>
+
     <div class="bg">
-      <div class="sec-title">CLIENTES ATENDIDOS PELA IA - CRESCIMENTO ACUMULADO</div>
-      <div style="position:relative;height:140px"><canvas id="cCli" role="img" aria-label="Clientes acumulados de 2026 a 2030"></canvas></div>
+      <div class="sec-title">Pontos Fortes vs Riscos</div>
+      <div class="grid2">
+        <div>
+          <div style="font-size:10px;color:var(--green);margin-bottom:6px;font-weight:600">✓ PONTOS FORTES</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.8">
+            Única plataforma que cobre o ciclo comercial completo<br>
+            AVM diferenciado com dados oficiais (SUNARP)<br>
+            Detecção de alpha + scoring jurídico integrado<br>
+            IA conversacional 24/7 no WhatsApp e portal<br>
+            Modelo escalável B2C e B2B simultaneamente
+          </div>
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--red);margin-bottom:6px;font-weight:600">✗ RISCOS</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.8">
+            Dependência da qualidade dos dados oficiais e cadastros<br>
+            Resistência cultural de corretores tradicionais<br>
+            Custos de integração com registros públicos<br>
+            Competição internacional ao expandir para Latam<br>
+            Barreiras regulatórias em diferentes mercados
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- PANEL: LATAM -->
-  <div class="panel" id="panel-latam">
-    <div class="grid3" style="margin-bottom:10px">
-      <div class="bg"><div class="kpi-lbl">Mercado-alvo LatAm</div><div class="kpi-val green">US$ 2,1T</div><div class="kpi-sub" style="color:#7d8590">valor imobiliário urbano</div></div>
-      <div class="bg"><div class="kpi-lbl">Transações anuais LatAm</div><div class="kpi-val blue">7,6M</div><div class="kpi-sub" style="color:#7d8590">oportunidades anuais</div></div>
-      <div class="bg"><div class="kpi-lbl">Penetração IA 2030</div><div class="kpi-val amber">11%</div><div class="kpi-sub green trend-up">vs 0,5% atual</div></div>
-    </div>
-    <div class="grid2">
-      <div class="bg">
-          <div class="sec-title">RECEITA PROJETADA POR PAÍS 2030 (US$ M)</div>
-          <div style="position:relative;height:200px"><canvas id="cLatam" role="img" aria-label="Receita projetada por país em 2030"></canvas></div>
-      </div>
-      <div class="bg">
-        <div class="sec-title">FOCO DE EXPANSÃO LATAM</div>
-        <svg viewBox="0 0 260 320" width="100%" style="max-height:210px">
-          <path d="M80 20 L90 18 L106 22 L116 20 L121 28 L131 30 L136 42 L146 45 L151 55 L149 68 L156 72 L159 85 L153 95 L156 108 L149 118 L146 130 L139 140 L129 148 L121 155 L113 165 L106 175 L101 185 L96 178 L89 168 L83 160 L79 148 L73 140 L69 128 L66 115 L61 102 L59 88 L63 75 L66 62 L69 50 L73 38 L76 28 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
-          <path d="M55 90 L68 88 L72 96 L78 98 L80 108 L74 115 L66 115 L61 108 L56 100 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
-          <path d="M58 118 L65 115 L70 120 L68 130 L62 132 L57 125 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
-          <path d="M74 155 L82 150 L88 155 L90 168 L84 178 L78 175 L73 165 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
-          <path d="M96 178 L106 175 L116 182 L120 195 L115 205 L108 210 L100 205 L94 195 Z" fill="#1c2128" stroke="#30363d" stroke-width="0.8"/>
-          <circle cx="100" cy="168" r="9" fill="#3fb95033" stroke="#3fb950" stroke-width="1.2"/>
-          <circle cx="100" cy="168" r="5" fill="#3fb950"/>
-          <text x="112" y="172" font-size="9" fill="#3fb950" font-weight="600">Peru</text>
-          <text x="112" y="182" font-size="8" fill="#7d8590">US$ 15M · 2030</text>
-          <circle cx="108" cy="120" r="7" fill="#58a6ff33" stroke="#58a6ff" stroke-width="1"/>
-          <circle cx="108" cy="120" r="4" fill="#58a6ff"/>
-          <text x="120" y="118" font-size="8" fill="#58a6ff">Brasil</text>
-          <text x="120" y="128" font-size="7" fill="#7d8590">US$ 52M</text>
-          <circle cx="65" cy="100" r="6" fill="#a371f733" stroke="#a371f7" stroke-width="1"/>
-          <circle cx="65" cy="100" r="3" fill="#a371f7"/>
-          <text x="38" y="98" font-size="8" fill="#a371f7">México</text>
-          <text x="38" y="108" font-size="7" fill="#7d8590">US$ 37M</text>
-          <circle cx="65" cy="123" r="6" fill="#e3b34133" stroke="#e3b341" stroke-width="1"/>
-          <circle cx="65" cy="123" r="3" fill="#e3b341"/>
-          <text x="36" y="121" font-size="8" fill="#e3b341">Colômbia</text>
-          <text x="36" y="131" font-size="7" fill="#7d8590">US$ 21M</text>
-          <circle cx="92" cy="186" r="5" fill="#f0997b33" stroke="#f0997b" stroke-width="1"/>
-          <circle cx="92" cy="186" r="2.5" fill="#f0997b"/>
-          <text x="32" y="189" font-size="8" fill="#f0997b">Chile</text>
-          <text x="32" y="199" font-size="7" fill="#7d8590">US$ 12M</text>
-        </svg>
-      </div>
-    </div>
-    <div class="bg">
-      <div class="sec-title">VELOCIDADE DE FECHAMENTO POR PAÍS (DIAS) - 2026 vs 2030</div>
-      <div style="position:relative;height:110px"><canvas id="cSpeed" role="img" aria-label="Velocidade de fechamento por país na LatAm"></canvas></div>
-    </div>
-  </div>
-
-  <!-- PANEL: CONCORRÊNCIA -->
+  <!-- ====== PANEL: COMPETIDORES ====== -->
   <div class="panel" id="panel-comp">
-    <div class="grid4" style="margin-bottom:12px">
-      <div class="bg"><div class="kpi-lbl">Vantagem de velocidade</div><div class="kpi-val green">4,2x</div><div class="kpi-sub" style="color:#7d8590">vs imobiliária tradicional</div></div>
-      <div class="bg"><div class="kpi-lbl">Custo por transação</div><div class="kpi-val green">13%</div><div class="kpi-sub" style="color:#7d8590">do custo do modelo clássico</div></div>
-      <div class="bg"><div class="kpi-lbl">Precisão de preço</div><div class="kpi-val green">+31%</div><div class="kpi-sub" style="color:#7d8590">vs portais sem IA</div></div>
-      <div class="bg"><div class="kpi-lbl">NPS líder</div><div class="kpi-val green">79</div><div class="kpi-sub" style="color:#7d8590">vs 58 do mercado</div></div>
-    </div>
-    <div class="grid2" style="margin-bottom:10px">
-      <div class="bg">
-        <div class="sec-title">TEMPO MÉDIO DE FECHAMENTO (DIAS)</div>
-        <div class="comp-row"><span class="comp-name" style="color:#3fb950;font-weight:600">Imob. Autônomo Peru</span><div class="bar-bg"><div class="bar-fill" style="width:18%;background:#3fb950"></div></div><span class="green comp-val">21 d</span></div>
-        <div class="comp-row"><span class="comp-name">Corretor tradicional</span><div class="bar-bg"><div class="bar-fill" style="width:78%;background:#f85149"></div></div><span class="red comp-val">92 d</span></div>
-        <div class="comp-row"><span class="comp-name">Portal classificado</span><div class="bar-bg"><div class="bar-fill" style="width:69%;background:#e3b341"></div></div><span class="amber comp-val">81 d</span></div>
-        <div class="comp-row"><span class="comp-name">Imobiliária premium</span><div class="bar-bg"><div class="bar-fill" style="width:56%;background:#e3b341"></div></div><span class="amber comp-val">66 d</span></div>
-        <div class="comp-row"><span class="comp-name">Marketplace regional</span><div class="bar-bg"><div class="bar-fill" style="width:63%;background:#f0997b"></div></div><span class="coral comp-val">74 d</span></div>
+    <div class="bg" style="margin-bottom:10px">
+      <div class="sec-title">Posicionamento competitivo · Peru</div>
+      <div id="comp-peru-list">
+        <div class="comp-row">
+          <div class="comp-name" style="color:var(--green);font-weight:600">Sua Proposta</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:75%;background:var(--green)"></div></div>
+          <div class="comp-val green">75%</div>
+          <span class="comp-tag tag-green">LÍDER</span>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">GoJom</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:65%;background:var(--blue)"></div></div>
+          <div class="comp-val blue">65%</div>
+          <span class="comp-tag tag-blue">PropTech</span>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Urbania.pe</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:60%;background:var(--amber)"></div></div>
+          <div class="comp-val amber">60%</div>
+          <span class="comp-tag tag-amber">Portal</span>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Adondevivir</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:55%;background:var(--amber)"></div></div>
+          <div class="comp-val amber">55%</div>
+          <span class="comp-tag tag-amber">Portal</span>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Properati</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:50%;background:var(--muted)"></div></div>
+          <div class="comp-val" style="color:var(--muted)">50%</div>
+          <span class="comp-tag" style="background:var(--border2);color:var(--muted)">Dados</span>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">Nexo / InfoCasas</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:45%;background:var(--muted)"></div></div>
+          <div class="comp-val" style="color:var(--muted)">45%</div>
+          <span class="comp-tag" style="background:var(--border2);color:var(--muted)">Nicho</span>
+        </div>
+        <div class="comp-row">
+          <div class="comp-name">FB / WhatsApp</div>
+          <div class="bar-bg"><div class="bar-fill" style="width:40%;background:var(--red)"></div></div>
+          <div class="comp-val red">40%</div>
+          <span class="comp-tag tag-red">Informal</span>
+        </div>
       </div>
-      <div class="bg">
-        <div class="sec-title">PRECISÃO DE AVALIAÇÃO (%)</div>
-        <div class="comp-row"><span class="comp-name" style="color:#3fb950;font-weight:600">Imob. Autônomo Peru</span><div class="bar-bg"><div class="bar-fill" style="width:95%;background:#3fb950"></div></div><span class="green comp-val">95%</span></div>
-        <div class="comp-row"><span class="comp-name">Corretor tradicional</span><div class="bar-bg"><div class="bar-fill" style="width:70%;background:#58a6ff"></div></div><span class="blue comp-val">70%</span></div>
-        <div class="comp-row"><span class="comp-name">Portal classificado</span><div class="bar-bg"><div class="bar-fill" style="width:64%;background:#58a6ff"></div></div><span class="blue comp-val">64%</span></div>
-        <div class="comp-row"><span class="comp-name">Imobiliária premium</span><div class="bar-bg"><div class="bar-fill" style="width:76%;background:#58a6ff"></div></div><span class="blue comp-val">76%</span></div>
-        <div class="comp-row"><span class="comp-name">Marketplace regional</span><div class="bar-bg"><div class="bar-fill" style="width:68%;background:#58a6ff"></div></div><span class="blue comp-val">68%</span></div>
-      </div>
     </div>
+
     <div class="bg">
-      <div class="sec-title">RADAR COMPETITIVO - PONTUAÇÃO GERAL (0-100)</div>
-      <div style="position:relative;height:190px"><canvas id="cRadar" role="img" aria-label="Radar competitivo"></canvas></div>
-    </div>
-    <div class="bg" style="margin-top:8px">
-      <div class="sec-title">CUSTO OPERACIONAL POR TRANSAÇÃO (S/)</div>
-      <div style="position:relative;height:90px"><canvas id="cCusto" role="img" aria-label="Custo operacional por transação"></canvas></div>
+      <div class="sec-title">Tabela comparativa detalhada</div>
+      <table class="sw-table">
+        <thead>
+          <tr>
+            <td>Concorrente</td>
+            <td>Modelo</td>
+            <td>Pontos Fortes</td>
+            <td>Fraquezas</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:var(--green-dim)">
+            <td style="color:var(--green);font-weight:600">Sua Proposta</td>
+            <td>PropTech integral com IA avançada</td>
+            <td style="color:var(--green)">AVM robusto + detecção alpha + fechamento end-to-end + 5 agentes IA</td>
+            <td style="color:var(--amber)">Dependência de dados oficiais, resistência de corretores</td>
+          </tr>
+          <tr>
+            <td>Urbania.pe</td>
+            <td>Portal tradicional por volume de anúncios</td>
+            <td>Grande inventário, alto tráfego, posicionamento em Lima</td>
+            <td>Sem IA avançada, listagens manuais, sem auditoria de valor</td>
+          </tr>
+          <tr>
+            <td>Adondevivir</td>
+            <td>Portal com monetização por leads</td>
+            <td>Alto volume, filtros básicos</td>
+            <td>Leads pouco qualificados, sem algoritmos preditivos</td>
+          </tr>
+          <tr>
+            <td>Properati</td>
+            <td>Portal com dados de bairros</td>
+            <td>Análise descritiva e dados de mercado</td>
+            <td>Sem AVM robusto, tráfego menor, sem automação</td>
+          </tr>
+          <tr>
+            <td>GoJom</td>
+            <td>PropTech com IA preditiva (Ai-tana)</td>
+            <td>Predição de preços, assistente virtual</td>
+            <td>Cobertura limitada, sem ecossistema integral</td>
+          </tr>
+          <tr>
+            <td>FB / WhatsApp</td>
+            <td>Canais informais (ecossistema Meta)</td>
+            <td>Grande alcance, fácil uso, penetração massiva</td>
+            <td style="color:var(--red)">Risco de fraude, sem transparência nem cruzamento de dados</td>
+          </tr>
+          <tr>
+            <td>Nexo / InfoCasas</td>
+            <td>Portais secundários por anúncios</td>
+            <td>Nicho específico, presença regional</td>
+            <td>Baixo impacto na decisão final, sem IA</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
+  <!-- ====== PANEL: PROBABILIDADES ====== -->
+  <div class="panel" id="panel-prob">
+    <div class="grid2" style="margin-bottom:12px">
+      <div class="bg">
+        <div class="sec-title">Probabilidades · Peru</div>
+        <div id="prob-peru"></div>
+      </div>
+      <div class="bg">
+        <div class="sec-title">Probabilidades · Latam</div>
+        <div id="prob-latam"></div>
+      </div>
+    </div>
+
+    <div class="bg" style="margin-bottom:10px">
+      <div class="sec-title">Análise de risco/retorno comparativa</div>
+      <div class="chart-wrap"><canvas id="cRadar"></canvas></div>
+    </div>
+
+    <div class="bg">
+      <div class="sec-title">Conclusões da análise</div>
+      <div class="insight"><b>Proposta própria:</b> A mais sólida e disruptiva, cobre as lacunas críticas de avaliação objetiva e automação comercial. Melhor projeção de sucesso no Peru e Latam.</div>
+      <div class="insight"><b>Urbania / Adondevivir:</b> Continuarão dominando em tráfego, mas carecem de diferenciação tecnológica. Vulneráveis se a PropTech escalar rápido.</div>
+      <div class="insight"><b>Properati / GoJom:</b> Trazem inovação parcial, mas não conseguem fechar o ciclo completo. GoJom é o concorrente tecnológico mais próximo.</div>
+      <div class="insight"><b>Canais informais:</b> Alta penetração cultural, mas vulneráveis pela falta de transparência e risco regulatório em transações grandes.</div>
+    </div>
+  </div>
+
+  <!-- ====== PANEL: LATAM ====== -->
+  <div class="panel" id="panel-latam">
+    <div class="insight" style="margin-bottom:12px"><b>Expansão Latam:</b> Mercados como México, Colômbia e Chile demandam transparência na avaliação. A proposta tem 60-70% de probabilidade de sucesso com alianças estratégicas chave.</div>
+
+    <div class="grid2" style="margin-bottom:12px">
+      <div class="bg">
+        <div class="sec-title">Probabilidade de sucesso na Latam por concorrente</div>
+        <div class="chart-wrap"><canvas id="cLatamComp"></canvas></div>
+      </div>
+      <div class="bg">
+        <div class="sec-title">Fatores de expansão Latam</div>
+        <div style="margin-top:8px">
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px">México (demanda transparência)</span><span class="green" style="font-size:10px;font-family:'DM Mono',monospace">ALTO</span></div>
+            <div class="bar-bg"><div class="bar-fill" style="width:85%;background:var(--green)"></div></div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px">Colômbia (mercado ativo)</span><span class="green" style="font-size:10px;font-family:'DM Mono',monospace">ALTO</span></div>
+            <div class="bar-bg"><div class="bar-fill" style="width:80%;background:var(--green)"></div></div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px">Chile (PropTech maduro)</span><span class="blue" style="font-size:10px;font-family:'DM Mono',monospace">MÉDIO-ALTO</span></div>
+            <div class="bar-bg"><div class="bar-fill" style="width:70%;background:var(--blue)"></div></div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px">Barreira regulatória</span><span class="amber" style="font-size:10px;font-family:'DM Mono',monospace">MÉDIO</span></div>
+            <div class="bar-bg"><div class="bar-fill" style="width:55%;background:var(--amber)"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-size:10px">Competição internacional</span><span class="red" style="font-size:10px;font-family:'DM Mono',monospace">ALTO RISCO</span></div>
+            <div class="bar-bg"><div class="bar-fill" style="width:70%;background:var(--red)"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg">
+      <div class="sec-title">Comparativo Peru vs Latam — Sua Proposta</div>
+      <div class="chart-wrap-sm"><canvas id="cPeLatam"></canvas></div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-function sendPrompt(promptText){
-  if(typeof window.parent?.postMessage==='function'){
-    window.parent.postMessage({type:'prompt',value:promptText},'*');
-  }else{
-    console.log(promptText);
-  }
+function sendPrompt(t){
+  if(typeof window.parent?.postMessage==='function'){window.parent.postMessage({type:'prompt',value:t},'*');}
 }
 
-const bmcData={
-  parceiros:{title:'Parceiros-chave',color:'#58a6ff',items:['SUNARP e cartórios com fluxo digital para validação documental','Bancos e fintechs para pré-aprovação hipotecária','Municípios e fontes urbanas para dados de zoneamento','Proptechs e CRMs para distribuição de inventário','Gateways de assinatura e validação de identidade'],kpis:[{l:'Parceiros ativos',v:'29',c:'green'},{l:'Integrações API',v:'11',c:'blue'},{l:'Redução de fricção',v:'71%',c:'green'}]},
-  atividades:{title:'Atividades-chave',color:'#3fb950',items:['Avaliação preditiva por distrito e tipo de ativo','Scoring jurídico e financeiro antes do fechamento','Atendimento comercial multicanal com IA 24/7','Automação de documentos e checklist de fechamento','Retreinamento contínuo com dados de demanda e preço'],kpis:[{l:'Contratos automatizados/mês',v:'88',c:'green'},{l:'Leads qualificados/dia',v:'57',c:'blue'},{l:'Uptime dos agentes',v:'99,7%',c:'green'}]},
-  proposta:{title:'Proposta de valor',color:'#e3b341',items:['Fechamento imobiliário muito mais rápido para o comprador peruano','Maior transparência em preço, risco e comparáveis','Acompanhamento automatizado do lead até a assinatura','Custo comercial significativamente menor que o modelo tradicional','Experiência escalável para residencial e investimento'],kpis:[{l:'NPS médio',v:'79',c:'green'},{l:'Satisfação pós-venda',v:'92%',c:'green'},{l:'Reclamações/mês',v:'4',c:'amber'}]},
-  relacionamento:{title:'Relacionamento com clientes',color:'#a371f7',items:['Assistente IA via chat e WhatsApp','Alertas de oportunidades conforme orçamento','Painel personalizado por perfil do comprador','Acompanhamento automático após visitas e propostas','Suporte de um estrategista humano em operações complexas'],kpis:[{l:'Tempo de resposta',v:'< 3 min',c:'green'},{l:'Retenção de clientes',v:'78%',c:'green'},{l:'Indicações orgânicas',v:'34%',c:'blue'}]},
-  segmentos:{title:'Segmentos de clientes',color:'#f0997b',items:['Compradores de primeiro imóvel na Grande Lima','Investidores de aluguel de curto e longo prazo','Construtoras médias com venda digital','Corretores independentes que buscam eficiência','Peruanos no exterior com compra remota'],kpis:[{l:'Ticket médio',v:'S/ 410k',c:'amber'},{l:'Clientes premium',v:'26%',c:'purple'},{l:'Segmento líder',v:'Primeiro imóvel',c:'blue'}]},
-  recursos:{title:'Recursos-chave',color:'#58a6ff',items:['Cinco agentes IA especializados em mercado, pricing, suporte, risco e fechamento','Base histórica de imóveis urbanos e comparáveis','Infraestrutura cloud escalável para análise e scoring','Motor de recomendação e priorização comercial','Equipe humana enxuta para supervisão e parcerias'],kpis:[{l:'Imóveis processados/dia',v:'1.480',c:'green'},{l:'Infra/mês',v:'S/ 26k',c:'amber'},{l:'SLA uptime',v:'99,9%',c:'green'}]},
-  canais:{title:'Canais de distribuição',color:'#a371f7',items:['Portal web com busca guiada por IA','WhatsApp Business com qualificação automática','Fluxo remoto para assessorias e propostas','Canal B2B para construtoras e fundos','Parcerias com instituições financeiras e corretores'],kpis:[{l:'Leads via web',v:'47%',c:'green'},{l:'Leads via WhatsApp',v:'36%',c:'blue'},{l:'Leads via parceiros',v:'17%',c:'amber'}]},
-  custos:{title:'Estrutura de custos',color:'#f85149',items:['Infraestrutura cloud e observabilidade','Treinamento e ajuste fino de modelos','Compliance jurídico e documental','Aquisição digital e performance','Suporte comercial e customer success'],kpis:[{l:'Custo fixo/mês',v:'S/ 142k',c:'amber'},{l:'Custo variável/transação',v:'S/ 520',c:'green'},{l:'Break-even mensal',v:'172 fechamentos',c:'blue'}]},
-  receitas:{title:'Fontes de receita',color:'#3fb950',items:['Comissão por venda e fechamento imobiliário','Assinatura premium para investidores ativos','Relatórios de mercado por distrito e segmento','Licenciamento do stack para parceiros B2B','Monetização de insights anonimizados'],kpis:[{l:'Comissões/mês',v:'S/ 655k',c:'green'},{l:'Premium/mês',v:'S/ 255k',c:'purple'},{l:'ARPU',v:'S/ 246',c:'amber'}]},
+// LEAN CANVAS DATA (TRADUZIDO)
+const lcData={
+  problema:{title:'Problema',color:'#f04f55',items:['Informação assimétrica na avaliação de imóveis','Processos comerciais fragmentados e pouco eficientes','Risco de fraude em canais informais (FB, WhatsApp)'],tags:['CRÍTICO','VALIDADO','MERCADO PRONTO']},
+  solucion:{title:'Solução',color:'#4d9de0',items:['AVM hiperlocal com dados cadastrais e registros públicos (SUNARP)','Detector de oportunidades de valorização por zona','CRM predictivo com IA conversacional avançada'],tags:['TECNOLOGIA','IA AVANÇADA','DADOS OFICIAIS']},
+  propuesta:{title:'Proposta de Valor Única',color:'#00c875',items:['Plataforma que audita, alerta e fecha com precisão','Transparência na avaliação + eficiência no fechamento comercial','Única solução que cobre o ciclo comercial completo'],tags:['DIFERENCIAL','ÚNICO NO MERCADO']},
+  ventaja:{title:'Vantagem Competitiva',color:'#9b72f7',items:['Orquestração integrada dos 5 agentes IA especializados','Diferencial em avaliação + detecção de alpha + fechamento sem fricção','Sem equivalente no ecossistema imobiliário peruano'],tags:['MOAT','ESCALÁVEL','B2C + B2B']},
+  canales:{title:'Canais',color:'#f5a623',items:['Portal web + app móvel com busca guiada por IA','Integração com WhatsApp Business e CRM','Alianças com bancos e cartórios para fechamento digital'],tags:['OMNICANAL','WHATSAPP','B2B']},
+  segmentos:{title:'Segmentos',color:'#f0836a',items:['Famílias em Lima Moderna e Lima Top','Investidores multi-proprietários Lima + províncias (Trujillo, Piura, Arequipa)','Compradores remotos (peruanos no exterior)'],tags:['FAMÍLIAS','INVESTIDORES','PROVÍNCIAS']},
+  metricas:{title:'Métricas-Chave',color:'#4d9de0',items:['Número de propriedades auditadas por mês','Leads qualificados gerados por canal','Taxa de fechamento automatizado vs. processo manual'],tags:['KPI PRINCIPAL','OPERACIONAL','RECEITA']},
+  costos:{title:'Estrutura de Custos',color:'#f04f55',items:['Desenvolvimento tecnológico (IA, Big Data, infraestrutura cloud)','Marketing e aquisição de usuários (performance + orgânico)','Integração com registros públicos e cadastros (SUNARP, municípios)'],tags:['CAPEX IA','MARKETING','INTEGRAÇÕES']},
 };
 
-function selectBMC(el,key){
-  document.querySelectorAll('.bmc-block').forEach(b=>b.classList.remove('sel'));
+function selectLC(el,key){
+  document.querySelectorAll('.lc-block').forEach(b=>b.classList.remove('sel'));
   el.classList.add('sel');
-  const d=bmcData[key];const det=document.getElementById('bmc-detail');const cont=document.getElementById('bmc-detail-content');
-  cont.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="width:10px;height:10px;border-radius:50%;background:${d.color}"></div><span style="font-size:13px;font-weight:500;color:${d.color}">${d.title}</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><div style="font-size:10px;color:#7d8590;margin-bottom:6px;letter-spacing:.04em">ELEMENTOS PRINCIPAIS</div>${d.items.map(i=>`<div style="font-size:11px;color:#c9d1d9;padding:3px 0;border-bottom:0.5px solid #21262d">- ${i}</div>`).join('')}</div><div><div style="font-size:10px;color:#7d8590;margin-bottom:6px;letter-spacing:.04em">MÉTRICAS DO BLOCO</div>${d.kpis.map(k=>`<div style="background:#0d1117;border-radius:6px;padding:6px 10px;margin-bottom:6px"><div style="font-size:10px;color:#7d8590">${k.l}</div><div style="font-size:18px;font-weight:500;color:${k.c==='green'?'#3fb950':k.c==='blue'?'#58a6ff':k.c==='purple'?'#a371f7':'#e3b341'}">${k.v}</div></div>`).join('')}</div></div>`;
+  const d=lcData[key];
+  const det=document.getElementById('lc-detail');
+  const cont=document.getElementById('lc-detail-content');
+  cont.innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="width:10px;height:10px;border-radius:50%;background:${d.color};box-shadow:0 0 8px ${d.color}40"></div>
+      <span style="font-size:13px;font-weight:600;color:${d.color}">${d.title}</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:8px;letter-spacing:.06em;font-family:'DM Mono',monospace;text-transform:uppercase">ELEMENTOS-CHAVE</div>
+        ${d.items.map(i=>`<div style="font-size:11px;color:#c9d1d9;padding:5px 0;border-bottom:1px solid var(--border);display:flex;gap:6px"><span style="color:${d.color}">→</span>${i}</div>`).join('')}
+      </div>
+      <div>
+        <div style="font-size:9px;color:var(--muted);margin-bottom:8px;letter-spacing:.06em;font-family:'DM Mono',monospace;text-transform:uppercase">TAGS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          ${d.tags.map(t=>`<span style="background:${d.color}20;color:${d.color};border:1px solid ${d.color}40;border-radius:4px;padding:2px 8px;font-size:9px;font-family:'DM Mono',monospace">${t}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
   det.classList.add('show');
 }
 
@@ -298,35 +507,109 @@ function showPanel(id,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('act'));
   document.getElementById('panel-'+id).classList.add('show');
   btn.classList.add('act');
-  if(id==='kpis')initKpiCharts();
-  if(id==='proj')initProjCharts();
+  if(id==='prob')initProbCharts();
   if(id==='latam')initLatamCharts();
-  if(id==='comp')initCompCharts();
+}
+
+// DADOS DE PROBABILIDADE (TRADUZIDO)
+const probData={
+  peru:[
+    {name:'Sua Proposta',success:75,fail:25,color:'#00c875'},
+    {name:'GoJom',success:65,fail:35,color:'#4d9de0'},
+    {name:'Urbania',success:60,fail:40,color:'#f5a623'},
+    {name:'Adondevivir',success:55,fail:45,color:'#f5a623'},
+    {name:'Properati',success:50,fail:50,color:'#5a6480'},
+    {name:'Nexo/InfoCasas',success:45,fail:55,color:'#5a6480'},
+    {name:'FB/WhatsApp',success:40,fail:60,color:'#f04f55'},
+  ],
+  latam:[
+    {name:'FB/WhatsApp',success:85,fail:15,color:'#f04f55'},
+    {name:'Sua Proposta',success:65,fail:35,color:'#00c875'},
+    {name:'Properati',success:55,fail:45,color:'#5a6480'},
+    {name:'GoJom',success:50,fail:50,color:'#4d9de0'},
+    {name:'Nexo/InfoCasas',success:55,fail:45,color:'#5a6480'},
+    {name:'Urbania',success:40,fail:60,color:'#f5a623'},
+    {name:'Adondevivir',success:45,fail:55,color:'#f5a623'},
+  ]
+};
+
+function renderProbBars(containerId, data){
+  const el=document.getElementById(containerId);
+  if(!el)return;
+  el.innerHTML=data.map(d=>`
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:10px;font-weight:500;color:${d.color}">${d.name}</span>
+        <span style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted)"><span style="color:var(--green)">${d.success}%</span> sucesso / <span style="color:var(--red)">${d.fail}%</span> risco</span>
+      </div>
+      <div class="bar-bg" style="height:8px;border-radius:4px;background:var(--border2)">
+        <div style="height:100%;width:${d.success}%;background:${d.color};border-radius:4px;transition:width 1s"></div>
+      </div>
+    </div>`).join('');
 }
 
 let chartsInit={};
-function initKpiCharts(){
-  if(chartsInit.kpi)return;chartsInit.kpi=true;
-  new Chart(document.getElementById('cRecDist'),{type:'doughnut',data:{labels:['Comissões','Premium / SaaS'],datasets:[{data:[72,28],backgroundColor:['#3fb950','#a371f7'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'68%'}});
-  new Chart(document.getElementById('cFunil'),{type:'bar',data:{labels:['Leads','Qualificados','Propostas','Contratos'],datasets:[{data:[1380,710,318,86],backgroundColor:['#58a6ff55','#a371f755','#e3b34155','#3fb95088'],borderColor:['#58a6ff','#a371f7','#e3b341','#3fb950'],borderWidth:1,borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:9}},grid:{color:'#21262d'},border:{display:false}},y:{ticks:{color:'#c9d1d9',font:{size:10}},grid:{display:false},border:{display:false}}}}});
-}
-function initProjCharts(){
-  if(chartsInit.proj)return;chartsInit.proj=true;
-  const yrs=['2026','2027','2028','2029','2030'];
-  new Chart(document.getElementById('cProj'),{type:'bar',data:{labels:yrs,datasets:[{label:'Receita (S/M)',data:[3.4,8.1,17.6,33.8,56],backgroundColor:yrs.map((_,i)=>i===4?'#3fb950':'#3fb95055'),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:10}},grid:{color:'#21262d'},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>'S/ '+v+'M'},grid:{color:'#21262d'},border:{display:false}}}}});
-  new Chart(document.getElementById('cCli'),{type:'line',data:{labels:yrs,datasets:[{label:'Clientes',data:[5100,14900,33200,68900,118000],borderColor:'#58a6ff',backgroundColor:'#58a6ff18',borderWidth:1.5,fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#58a6ff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:10}},grid:{color:'#21262d'},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>v>=1000?Math.round(v/1000)+'k':v},grid:{color:'#21262d'},border:{display:false}}}}});
-}
-function initLatamCharts(){
-  if(chartsInit.latam)return;chartsInit.latam=true;
-  new Chart(document.getElementById('cLatam'),{type:'bar',data:{labels:['Brasil','México','Colômbia','Peru','Chile'],datasets:[{data:[52,37,21,15,12],backgroundColor:['#58a6ff','#a371f7','#e3b341','#3fb950','#f0997b'],borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d8590',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>'US$ '+v+'M'},grid:{color:'#21262d'},border:{display:false}}}}});
-  new Chart(document.getElementById('cSpeed'),{type:'bar',data:{labels:['Brasil','México','Colômbia','Peru','Chile'],datasets:[{label:'2026',data:[26,33,39,31,29],backgroundColor:'#21262d',borderColor:'#7d8590',borderWidth:1,borderRadius:3},{label:'2030',data:[9,13,16,11,12],backgroundColor:['#58a6ff','#a371f7','#e3b341','#3fb950','#f0997b'],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{color:'#7d8590',font:{size:9},boxWidth:10}}},scales:{x:{ticks:{color:'#7d8590',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>v+' d'},grid:{color:'#21262d'},border:{display:false}}}}});
-}
-function initCompCharts(){
-  if(chartsInit.comp)return;chartsInit.comp=true;
-  new Chart(document.getElementById('cRadar'),{type:'radar',data:{labels:['Velocidade','Precisão IA','Custo','NPS','Automação'],datasets:[{label:'Imob. Autônomo Peru',data:[94,95,92,79,90],borderColor:'#3fb950',backgroundColor:'#3fb95022',pointBackgroundColor:'#3fb950',borderWidth:1.5},{label:'Corretor tradicional',data:[38,70,35,54,22],borderColor:'#58a6ff',backgroundColor:'#58a6ff11',pointBackgroundColor:'#58a6ff',borderWidth:1},{label:'Portal classificado',data:[45,64,48,58,34],borderColor:'#e3b341',backgroundColor:'#e3b34111',pointBackgroundColor:'#e3b341',borderWidth:1},{label:'Imobiliária premium',data:[61,76,54,66,49],borderColor:'#f0997b',backgroundColor:'#f0997b11',pointBackgroundColor:'#f0997b',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#7d8590',font:{size:9},boxWidth:10}}},scales:{r:{ticks:{display:false},grid:{color:'#21262d'},pointLabels:{color:'#c9d1d9',font:{size:9}},angleLines:{color:'#21262d'}}}}});
-  new Chart(document.getElementById('cCusto'),{type:'bar',data:{labels:['Imob. Autônomo','Corretor trad.','Portal','Imob. premium','Marketplace'],datasets:[{data:[520,4100,2800,2100,2450],backgroundColor:['#3fb950','#f8514955','#f8514944','#e3b34155','#f0997b55'],borderColor:['#3fb950','#f85149','#f85149','#e3b341','#f0997b'],borderWidth:1,borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#c9d1d9',font:{size:9}},grid:{display:false},border:{display:false}},y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>'S/ '+v.toLocaleString('es-PE')},grid:{color:'#21262d'},border:{display:false}}}}});
+function initProbCharts(){
+  if(chartsInit.prob)return;chartsInit.prob=true;
+  renderProbBars('prob-peru',probData.peru);
+  renderProbBars('prob-latam',probData.latam);
+
+  new Chart(document.getElementById('cRadar'),{
+    type:'radar',
+    data:{
+      labels:['AVM / Avaliação','IA Preditiva','Automação','Dados Oficiais','Cobertura','Modelo Integral'],
+      datasets:[
+        {label:'Sua Proposta',data:[95,90,92,95,75,97],borderColor:'#00c875',backgroundColor:'#00c87520',pointBackgroundColor:'#00c875',borderWidth:2},
+        {label:'GoJom',data:[70,85,55,40,50,45],borderColor:'#4d9de0',backgroundColor:'#4d9de011',pointBackgroundColor:'#4d9de0',borderWidth:1.5},
+        {label:'Urbania',data:[20,15,20,30,90,25],borderColor:'#f5a623',backgroundColor:'#f5a62311',pointBackgroundColor:'#f5a623',borderWidth:1},
+        {label:'Properati',data:[45,30,25,35,55,30],borderColor:'#9b72f7',backgroundColor:'#9b72f711',pointBackgroundColor:'#9b72f7',borderWidth:1},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#7d8590',font:{size:9},boxWidth:10}}},scales:{r:{ticks:{display:false},grid:{color:'#1e2330'},pointLabels:{color:'#c9d1d9',font:{size:9}},angleLines:{color:'#1e2330'}}}}
+  });
 }
 
-let ticker=0;
-setInterval(()=>{const el=document.getElementById('k-cli');if(el){ticker++;el.textContent=(4126+ticker*3).toLocaleString('pt-BR');}},3000);
+function initLatamCharts(){
+  if(chartsInit.latam)return;chartsInit.latam=true;
+
+  new Chart(document.getElementById('cLatamComp'),{
+    type:'bar',
+    data:{
+      labels:['FB/WhatsApp','Sua Proposta','Properati','Nexo/InfoCasas','GoJom','Adondevivir','Urbania'],
+      datasets:[{
+        data:[85,65,55,55,50,45,40],
+        backgroundColor:['#f04f5588','#00c875','#9b72f788','#5a648088','#4d9de088','#f5a62388','#f5a62355'],
+        borderColor:['#f04f55','#00c875','#9b72f7','#5a6480','#4d9de0','#f5a623','#f5a623'],
+        borderWidth:1,borderRadius:5
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{  
+        x:{ticks:{color:'#7d8590',font:{size:9},callback:v=>v+'%'},grid:{color:'#1e2330'},border:{display:false},min:0,max:100},
+        y:{ticks:{color:'#c9d1d9',font:{size:9}},grid:{display:false},border:{display:false}}
+      }
+    }
+  });
+
+  new Chart(document.getElementById('cPeLatam'),{
+    type:'bar',
+    data:{
+      labels:['Sua Proposta','Urbania','Adondevivir','Properati','GoJom','FB/WhatsApp','Nexo/InfoCasas'],
+      datasets:[
+        {label:'Peru',data:[75,60,55,50,65,40,45],backgroundColor:'#00c87588',borderColor:'#00c875',borderWidth:1,borderRadius:3},
+        {label:'Latam',data:[65,40,45,55,50,85,55],backgroundColor:'#4d9de088',borderColor:'#4d9de0',borderWidth:1,borderRadius:3}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top',labels:{color:'#7d8590',font:{size:10},boxWidth:10}}},
+      scales:{
+        x:{ticks:{color:'#c9d1d9',font:{size:9}},grid:{display:false},border:{display:false}},
+        y:{ticks:{color:'#7d8590',font:{size:9},callback:v=>v+'%'},grid:{color:'#1e2330'},border:{display:false},min:0,max:100}
+      }
+    }
+  });
+}
 </script>
